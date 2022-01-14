@@ -1,0 +1,24 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - ./:/app:z
+      - /app/node_modules
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    command: npm run dev
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    ports:
+      - "${MONGODB_PORT}:${MONGODB_PORT}"
+    volumes:
+      - dbvolume:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+volumes:
+  dbvolume: {}
